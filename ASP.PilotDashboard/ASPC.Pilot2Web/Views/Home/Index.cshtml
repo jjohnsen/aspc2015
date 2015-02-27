@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div id="main-container" ng-app="app">
+    <div class="panel" id="panel-welcome">
+        <div class="panel-container">
+            <h2>Star News</h2>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc tortor lacus, porta quis nunc nec, pulvinar fermentum urna. Nam eu vulputate ante. Donec tempus volutpat pharetra. Nulla suscipit urna erat, non vehicula magna ultricies ac. Phasellus a purus commodo ex congue mattis nec sed sapien.
+        </div>
+    </div>
+    <div class="panel" id="panel-map">
+        <div class="panel-container">
+            <h2>Star Map</h2>
+            <div id="map-container">
+                <div id="map"></div>
+            </div>
+
+        </div>
+    </div>
+    <div class="panel" id="panel-ship-info">
+        
+        <div class="panel-container" ng-controller="ShipController">
+            <h2>Your ship</h2>
+
+            <table ng-if="data.myShip">
+                <tr>
+                    <th>
+                        Call sign:
+                    </th>
+                    <td>
+                        {{ data.myShip.Title }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Status:
+                    </th>
+                    <td>
+                        {{ data.myShip.Ship_x0020_status }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Next Service:
+                    </th>
+                    <td>
+                        {{ data.myShip.Next_x0020_Service }}
+                    </td>
+                </tr>
+            </table>
+            
+            <h2>Your Ship Type</h2>
+            <div class="panel-content">
+                <img class="shipType" src="{{data.myShipType.EncodedAbsThumbnailUrl}}" />
+                {{ data.myShipType.Title }}
+            </div>
+        </div>
+    </div>
+
+    <div class="panel" id="panel-commands">
+        <div class="panel-container" ng-controller="CommandController">
+            <h2>Command Center</h2>
+
+            <div class="panel-content">
+                <a href="#" class="button button-green" ng-click="startFlight($event)">Start flight</a>
+                <a href="#" class="button button-red" ng-click="stopFlight($event)">Stop flight</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div>
+
+</div>
+
+@section Scripts {
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.5/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/PilotControl.js")"></script>
+
+    <script>
+
+    /* Come on people... we need some globals ;-) */
+        var user = {
+            pilotId: @ViewBag.UserId,
+            pilotName: "@ViewBag.UserName"
+        };
+
+        var map = L.map('map', {
+            maxZoom: 2,
+            minZoom: 1,
+            crs: L.CRS.Simple
+        }).setView([0, 50], 4);
+
+        var southWest = map.unproject([0, 1500], map.getMaxZoom());
+        var northEast = map.unproject([1500, 0], map.getMaxZoom());
+        map.setMaxBounds(new L.LatLngBounds(southWest, northEast));
+
+
+        //actual image dimensions: 1500 x 1500
+        var imageUrl = 'https://img396.imageshack.us/img396/1456/gmapnewujca8.jpg';
+
+        var southWestSize = map.unproject([0, 1500], map.getMaxZoom());
+        var northEastSize = map.unproject([1500, 0], map.getMaxZoom());
+        L.imageOverlay(imageUrl, new L.LatLngBounds(southWestSize, northEastSize)).addTo(map);
+
+        //function onMapClick(e) {
+        //    popup
+        //        .setLatLng(e.latlng)
+        //        .setContent("You clicked the map at " + e.latlng.toString())
+        //        .openOn(map);
+        //}
+        //map.on('click', onMapClick);
+
+        //L.marker(map.unproject([800, 300])).addTo(map).bindPopup("<b>I'm a dog!</b><br />I am a popup.<br /> ").openPopup();
+        //L.marker(map.unproject([700, 300])).addTo(map).bindPopup("<b>I'm a dog!</b><br />I am a popup.<br /> ").openPopup();
+
+
+    </script>
+
+}

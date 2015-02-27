@@ -1,0 +1,51 @@
+﻿@section Scripts {
+    <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            var pilotes = [
+                { id: 1, pilotName: "Rex 1", shipTitle: "TIE Fighter", lat: -128, lng: 128 },
+                { id: 2, pilotName: "Rex 2", shipTitle: "TIE Fighter", lat: -130, lng: 100 },
+                { id: 3, pilotName: "Rex 3", shipTitle: "TIE Fighter", lat: -50, lng: 200 },
+                { id: 4, pilotName: "Dah Skill Masta", shipTitle: "Imperial-StarDestroyer", lat: -50, lng: 200 },
+                { id: 5, pilotName: "Raar Anyell", shipTitle: "Tie-Advanced", lat: -40, lng: 210 },
+                { id: 6, pilotName: "Hadios Gek", shipTitle: "Tie-Bomber", lat: -30, lng: 220 },
+                { id: 7, pilotName: "Biggs Darklighter", shipTitle: "Tie-Bomber", lat: -20, lng: 240 },
+            ];
+            var hub = $.connection.pilotHub;
+            hub.client.addNewMessageToPage = function (pilotId, pilotName, shipTitle, lat, lng) {
+                console.log("recived message from:", pilotId)
+            }
+
+            $.connection.hub.start().done(function () {
+                setInterval(function () {
+                    $(pilotes).each(function (index, pilot) {
+                        if (!pilot.target_lat) {
+                            pilot.target_lat = Math.random() * -300;
+                            pilot.target_lng = Math.random() * 300;
+                        }
+
+                        if (pilot.target_lat > pilot.lat) {
+                            pilot.lat -= 0.2;
+                        } else if (pilot.target_lat < pilot.lat) {
+                            pilot.lat += 0.2;
+                        } else {
+                            pilot.target_lat = Math.random() * -300;
+                        }
+
+                        if (pilot.target_lng > pilot.lng) {
+                            pilot.lng -= 0.2;
+                        } else if (pilot.target_lng < pilot.lng) {
+                            pilot.lat += 0.2;
+                        } else {
+                            pilot.target_lng = Math.random() * 300;
+                        }
+                        hub.server.send(pilot.id, pilot.pilotName, pilot.shipTitle, pilot.lat, pilot.lng);
+                    })
+                    
+                }, 100);
+            });
+        });
+    </script>
+}

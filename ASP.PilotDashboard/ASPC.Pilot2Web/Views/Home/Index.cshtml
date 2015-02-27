@@ -37,7 +37,10 @@
                         Status:
                     </th>
                     <td>
-                        {{ data.myShip.Ship_x0020_status }}
+                        <div class="distress">
+                            {{ data.myShip.Ship_x0020_status }}
+                        </div>
+                        
                     </td>
                 </tr>
                 <tr>
@@ -65,6 +68,12 @@
             <div class="panel-content">
                 <a href="#" class="button button-green" ng-click="startFlight($event)">Start flight</a>
                 <a href="#" class="button button-red" ng-click="stopFlight($event)">Stop flight</a>
+                <br/>
+
+                <div class="distress-button">
+                    <a href="#" class="button button-red" ng-click="sendDistress($event)">Send distress signal</a>
+                </div>
+                
             </div>
         </div>
     </div>

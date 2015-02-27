@@ -194,7 +194,7 @@
             },
 
             updateMarker: function (pilotId, pilotName, shipTitle, lat, lng) {
-                console.log("GOT MESSAGE", pilotId, pilotName, shipTitle, lat, lng, this);
+                //console.log("GOT MESSAGE", pilotId, pilotName, shipTitle, lat, lng, this);
 
                 if (this.markers[pilotId]) {
                     this.markers[pilotId].setLatLng([lat, lng]);
@@ -208,15 +208,7 @@
                 var lat = parseInt(cords[0].trim());
                 var lng = parseInt(cords[1].trim());
                 var pos = map.unproject([lat, lng]);
-                console.log("CREATEMYMARKER");
                 this.hub.server.send(user.pilotId, user.pilotName, this.data.myShip.Title, pos.lat, pos.lng);
-
-                /*
-                var marker = L.marker(map.unproject([lat, lng])).addTo(map);
-
-                this.data.myMarker = marker;
-                console.log("MARKER", this.data.myMarker);
-                */
             },
 
             updateMyFlightStatus: function(status) {
@@ -251,44 +243,20 @@
             stopFlight: function () {
                 this.updateMyFlightStatus("Ready for deployment");
                 clearInterval(this.flightUpdateInterval);
+            },
+
+            sendDistress: function () {
+                console.log(this.markers);
+                var pos = this.markers[user.pilotId].getLatLng();
+                var message = "MAYDAY!! " + user.pilotName + " in distress. Galactic coordinates: " + pos.lat + "x" + pos.lng;
+                console.log("DISTRESS: ", message);
+                this.updateMyFlightStatus("IN DISTRESS", message);
+                this.hub.server.sendDistressSignal(message);
+                $("body").addClass("distress");
             }
 
         };
     });
-
-    //app.service('ShipService', function ($q, UtilService) {
-    //    var ships = undefined;
-    //    this.test = "nothing";
-    //    var self = this;
-
-    //    this.getShip = function () {
-    //        var deferred = $q.defer();
-    //        if (ships == undefined) {            
-    //            UtilService.execCrossDomainRequest().then(function (result) {
-    //                var ship = result.d.results[0];
-    //                self.test = "something";
-    //                deferred.resolve(ship);
-                    
-    //            })
-    //        } else {
-    //            deferred.resolve(ships)
-    //        }
-
-    //        return deferred.promise;
-    //    }
-
-    //    this.getShipType = function (id) {
-    //        var deferred = $q.defer();
-    //        var options = {
-    //            url: "/_api/SP.AppContextSite(@target)/web/lists/getbytitle('ShipTypes')/items?@target='{hostweburl}'&$filter=Id eq '" + id + "'&$select=Title,EncodedAbsThumbnailUrl" //&$select=AttachmentFiles,Title&$expand=AttachmentFiles" //&$select=EncodedAbsUrl"
-    //        }
-    //        UtilService.execCrossDomainRequest(options).then(function (result) {
-    //            var shipType = result.d.results[0];
-    //            deferred.resolve(shipType);
-    //        });
-    //        return deferred.promise;
-    //    }
-    //});
 
     app.controller('ShipController', ['$scope', 'DataService', function ($scope, DataService) {
         $scope.data = DataService.data;
@@ -297,30 +265,6 @@
 
         // Load the data;
         DataService.getMyShip();
-        /*
-        var ships = ShipService.getShip().then(function (ship) {
-            $scope.ship = ship;
-
-            // Add marker
-            var cords = ship.coordinates.split(",");
-            var lat = parseInt(cords[0].trim());
-            var lng = parseInt(cords[1].trim());
-            L.marker(map.unproject([lat, lng])).addTo(map);
-
-            console.log("GOT SHIP", ship)
-
-            self.getShipType(ship.Ship_x0020_typeId)
-        });
-        */
-
-
-        //this.getShipType = function (id) {
-        //    console.log("Get ship type", id);
-        //    var type = ShipService.getShipType(id).then(function (shipType) {
-        //        console.log("Got response on ship type", shipType);
-        //        $scope.shipType = shipType;
-        //    });
-        //}
     }]);
 
     app.controller('CommandController', ['$scope', 'DataService', function ($scope, DataService) {
@@ -334,6 +278,11 @@
         $scope.stopFlight = function ($event) {
             $event.preventDefault();
             DataService.stopFlight();
+        }
+
+        $scope.sendDistress = function ($event) {
+            $event.preventDefault();
+            DataService.sendDistress();
         }
     }]);
 

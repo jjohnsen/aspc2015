@@ -1,0 +1,33 @@
+﻿' We set color to green and wait for  
+' a small bump to start the program 
+' proper.
+10 basflg 1
+20 RGB 0, 255, 0
+30 if accelone < 4000 then goto 30 
+' Initializing
+40 H = rnd 359
+50 D = 1
+60 S = rnd 192 + 63
+' Set random color
+70 RGB rnd 255, rnd 255, rnd 255
+' Roll in random direction until 15 
+' seconds have passed (to avoid 
+' getting stuck after soft collision) 
+' or until we hit something.
+80 goroll H, S, D
+90 timerA = 15000
+100 timerB = rnd 1500 + 1500
+110 if accelone > 5000 or timerA = 0 then goto 150
+120 if timerB > 0 then goto 110
+' Every few seconds we randomly 
+' adjust our heading somewhat 
+' (+/- 15 degrees) and continue.
+130 H = (H + rnd 30 - 15) % 360
+140 goto 60
+' We hit something and perform 
+' a hard reverse.
+150 H = ((H + 180) % 360)
+160 goroll H, 255, 2
+170 delay 1000
+' Lets take it from the top.
+180 goto 60

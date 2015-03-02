@@ -1,0 +1,48 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+ 
+
+    <title></title>
+</head>
+<body>
+    <div>
+        <span id="yammer-login"></span>
+        <script>
+            yam.connect.loginButton('#yammer-login', function (resp) {
+                if (resp.authResponse) {
+                    document.getElementById('yammer-login').innerHTML = 'Welcome to Yammer!';
+                }
+            });
+        </script>
+
+        <script>
+            function post() {
+                yam.platform.request({
+                    url: "messages.json",     //this is one of many REST endpoints that are available
+                    method: "POST",
+                    data: {    //use the data object literal to specify parameters, as documented in the REST API section of this developer site
+                        "body": "testing 123",
+                        "group_id": "5348140",
+                    },
+                    success: function (user) { //print message response information to the console
+                        alert("The request was successful.");
+                    },
+                    error: function (user) {
+                        alert("There was an error with the request.");
+                    }
+                });
+            }
+
+
+        </script>
+    </div>
+</body>
+</html>

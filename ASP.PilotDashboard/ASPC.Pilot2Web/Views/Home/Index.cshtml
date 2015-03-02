@@ -9,6 +9,16 @@
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc tortor lacus, porta quis nunc nec, pulvinar fermentum urna. Nam eu vulputate ante. Donec tempus volutpat pharetra. Nulla suscipit urna erat, non vehicula magna ultricies ac. Phasellus a purus commodo ex congue mattis nec sed sapien.
         </div>
     </div>
+
+    <div class="panel" id="panel-yammer">
+        <div class="panel-container">
+            <div class="panel-content">
+                <div id="yammer-login"></div> 
+                <div id="embedded-feed" style="height:280px;width:100%;"></div>
+            </div>
+        </div>
+    </div>
+
     <div class="panel" id="panel-map">
         <div class="panel-container">
             <h2>Star Map</h2>
@@ -73,7 +83,7 @@
                 <div class="distress-button">
                     <a href="#" class="button button-red" ng-click="sendDistress($event)">Send distress signal</a>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -87,11 +97,13 @@
 @section Scripts {
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.5/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+    <script type="text/javascript" src="https://c64.assets-yammer.com/assets/platform_embed.js"></script>
+    <script type="text/javascript" data-app-id="7pVo0f4AHMDbYkAz2vOEg" src="https://c64.assets-yammer.com/assets/platform_js_sdk.js"></script>
     <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
     <script src="~/signalr/hubs"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/PilotControl.js")"></script>
 
-    <script>
+    <script type="text/javascript">
 
     /* Come on people... we need some globals ;-) */
         var user = {
@@ -116,19 +128,33 @@
         var southWestSize = map.unproject([0, 1500], map.getMaxZoom());
         var northEastSize = map.unproject([1500, 0], map.getMaxZoom());
         L.imageOverlay(imageUrl, new L.LatLngBounds(southWestSize, northEastSize)).addTo(map);
-
-        //function onMapClick(e) {
-        //    popup
-        //        .setLatLng(e.latlng)
-        //        .setContent("You clicked the map at " + e.latlng.toString())
-        //        .openOn(map);
-        //}
-        //map.on('click', onMapClick);
-
-        //L.marker(map.unproject([800, 300])).addTo(map).bindPopup("<b>I'm a dog!</b><br />I am a popup.<br /> ").openPopup();
-        //L.marker(map.unproject([700, 300])).addTo(map).bindPopup("<b>I'm a dog!</b><br />I am a popup.<br /> ").openPopup();
-
-
     </script>
+
+    <script type="text/javascript">
+        yam.connect.embedFeed(
+            {
+                container: '#embedded-feed',
+                network: 'skill.no',
+                feedType: 'group',                // can be 'group', 'topic', or 'user'
+                feedId: '5348140'                     // feed ID from the instructions above
+            , config: {
+                defaultGroupId: 5348140,
+                header: false,
+                footer: false
+            }
+            });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            yam.connect.loginButton('#yammer-login', function (resp) {
+                if (resp.authResponse) {
+                    document.getElementById('yammer-login').innerHTML = 'Yammer online';
+                }
+            });
+        });
+    </script>
+
+   
 
 }

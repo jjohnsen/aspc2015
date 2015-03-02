@@ -15,11 +15,17 @@ body {
 }
 #main-container {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  bottom: 10px;
-  border: 10px solid #ffde00;
+  /*
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    */
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  border: 8px solid #ffde00;
   border-radius: 10px;
   color: #ffde00;
   background: rgba(0, 0, 0, 0.7);
@@ -34,7 +40,7 @@ body {
   margin-bottom: 10px;
   font-weight: normal;
   font-family: jedi;
-  font-size: 30px;
+  font-size: 20px;
   text-shadow: 0px 0px 10px #000;
   padding-left: 10px;
 }
@@ -61,6 +67,12 @@ body {
 #main-container #panel-map .panel-container {
   left: 0px;
   right: 0px;
+}
+#main-container #panel-yammer {
+  left: 0px;
+  top: 50%;
+  width: 25%;
+  bottom: 0px;
 }
 #main-container #panel-ship-info {
   right: 0px;
@@ -94,6 +106,7 @@ table th {
   height: 100%;
 }
 #panel-ship-info img {
+  display: block;
   vertical-align: middle;
   border-radius: 10px;
 }
@@ -233,5 +246,35 @@ button {
   box-shadow: #000 0px 0px 10px inset;
   background: url(http://cdns2.freepik.com/free-photo/black-and-yellow-stripes_19-98834.jpg) center center;
   background-size: cover;
+}
+#yammer-login {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 2px solid #000;
+  border-radius: 10px;
+  box-shadow: #000 0px 0px 10px inset;
+  background-color: #1a5da5;
+  color: lightblue;
+  font-weight: bold;
+  font-size: 10px;
+  padding: 10px;
+  text-align: center;
+  -webkit-animation-name: yammer;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  -webkit-animation-timing-function: ease-in-out;
+}
+@-webkit-keyframes yammer {
+  0% {
+    background: #3a8be0;
+  }
+  50% {
+    background: #1f71c8;
+  }
+  100% {
+    background: #3a8be0;
+  }
 }
 /*# sourceMappingURL=ssite.css.map */

@@ -41,5 +41,11 @@ namespace ASPC.Pilot2Web.Controllers
 
             return View();
         }
+
+        public ActionResult Yammer()
+        {
+
+            return View();
+        }
     }
 }

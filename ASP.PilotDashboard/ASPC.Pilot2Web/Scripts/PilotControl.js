@@ -246,13 +246,27 @@
             },
 
             sendDistress: function () {
-                console.log(this.markers);
                 var pos = this.markers[user.pilotId].getLatLng();
                 var message = "MAYDAY!! " + user.pilotName + " in distress. Galactic coordinates: " + pos.lat + "x" + pos.lng;
-                console.log("DISTRESS: ", message);
+
                 this.updateMyFlightStatus("IN DISTRESS", message);
                 this.hub.server.sendDistressSignal(message);
                 $("body").addClass("distress");
+
+                yam.platform.request({
+                    url: "messages.json",     //this is one of many REST endpoints that are available
+                    method: "POST",
+                    data: {    //use the data object literal to specify parameters, as documented in the REST API section of this developer site
+                        "body": message,
+                        "group_id": "5348140",
+                    },
+                    success: function (user) { //print message response information to the console
+                      
+                    },
+                    error: function (user) {
+                        
+                    }
+                });
             }
 
         };

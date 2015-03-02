@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using Microsoft.ServiceBus.Notifications;
+using System.Net;
 
 namespace ASPC.Pilot2Web
 {
@@ -22,6 +23,16 @@ namespace ASPC.Pilot2Web
         {
             NotificationHubClient hub = NotificationHubClient.CreateClientFromConnectionString("Endpoint=sb://multiconsult-skydriveprep.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=4v+KZgVKG6X3MX9BvA8/nY6Q2HXHkR+qSYA2rmM5kSs=", "skillwizardsnotificationhub");
             hub.SendGcmNativeNotificationAsync("{ \"data\" : {\"msg\":\"" + message + "\"}}");
+            try
+            {
+                var request = (HttpWebRequest)WebRequest.Create("http://localhost:9090/testing");
+                request.GetResponse();
+            }
+            catch (Exception e)
+            {
+
+            }
+
         }
     }
 }

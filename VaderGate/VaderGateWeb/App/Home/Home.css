@@ -1,0 +1,52 @@
+﻿/* Page-specific styling */
+
+#About {
+    border: 1px #eee solid;
+    padding: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+#About a {
+    position: absolute;
+    top: 0px;
+    right: 3px;
+}
+
+#help {
+    font-weight: strong;
+}
+
+#selection{
+    display: none;
+}
+
+#selection .text {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px #eee solid;
+    max-height: 300px;
+    overflow: auto;
+}
+
+#selection .result {
+}
+
+#selection  .ok {
+    display: none;
+    color: darkgreen;
+    font-weight: bold;
+}
+
+#selection  .fail {
+    display: none;
+}
+
+#selection  .fail strong {
+    color: darkred;
+}
+
+#content-header {
+    background: #999;
+}
